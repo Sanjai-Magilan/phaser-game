@@ -1,0 +1,91 @@
+/* Keyboard overlay styles to mimic the provided image */
+#keyboard-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotateX(18deg) rotateZ(-6deg);
+  perspective: 1200px;
+  width: min(1200px, 92vw);
+  max-width: 1400px;
+  pointer-events: auto;
+}
+
+#keyboard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 18px 18px;
+  background: transparent;
+}
+
+.key {
+  aspect-ratio: 1 / 0.7;
+  background: linear-gradient(180deg, #1f2023 0%, #17171a 60%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffdd99;
+  font-weight: 700;
+  font-family: 'Arial', sans-serif;
+  font-size: calc(12px + 0.6vw);
+  box-shadow: 0 18px 0 0 rgba(255,210,130,0.06), 0 34px 24px rgba(0,0,0,0.6), inset 0 -6px 0 rgba(0,0,0,0.25);
+  transform-origin: center center;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  user-select: none;
+}
+
+.key.small { grid-column: span 1; }
+.key.medium { grid-column: span 2; }
+.key.large { grid-column: span 4; }
+.key.extra { grid-column: span 6; }
+
+.key::after {
+  content: '';
+  position: absolute;
+}
+
+.key.pressed {
+  transform: translateY(6px) scaleY(0.985);
+  box-shadow: 0 6px 0 0 rgba(0,0,0,0.4), 0 12px 20px rgba(0,0,0,0.6), inset 0 -2px 0 rgba(0,0,0,0.35);
+}
+
+#keyboard-overlay .row-offset-1 { margin-left: 6.5%; }
+#keyboard-overlay .row-offset-2 { margin-left: 14%; }
+
+/* subtle rim highlight to match image */
+#keyboard-overlay::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  box-shadow: 0 0 0 6px rgba(0,0,0,0.4) inset, 0 8px 30px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+
+#keyboard-svg { display:block; }
+
+.key-group { cursor: pointer; transition: transform 120ms ease, filter 120ms ease; }
+.key-group .bevel { filter: drop-shadow(0 8px 6px rgba(0,0,0,0.45)); }
+.key-group.pressed { transform: translateY(10px) scaleY(0.99); }
+.key-group.pressed .bevel { transform: translateY(6px); filter: none; }
+.key-text { font-family: 'Arial', sans-serif; letter-spacing: 2px; }
+
+#keyboard-overlay { top: 72%; }
+
+/* Fix pointer/touch/3D issues */
+#keyboard-overlay {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  touch-action: none;
+  will-change: transform;
+  z-index: 9999;
+}
+
+#keyboard-pixel-svg { display: block; }
+
+.key-group { pointer-events: none; }
+.key-group > image { pointer-events: none; }
+.key-group > rect { pointer-events: all; }

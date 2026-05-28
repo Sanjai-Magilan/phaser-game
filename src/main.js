@@ -1,5 +1,7 @@
 import "./style.css";
 import Phaser from "phaser";
+import "./keyboard.css";
+import { createContourKeyboard } from "./keyboard-contour";
 
 class MainScene extends Phaser.Scene {
   preload() {
@@ -38,6 +40,10 @@ new Phaser.Game({
     width: window.innerWidth,
     height: window.innerHeight,
   },
-  parent: "game",
+  parent: "app",
+  // ensure Phaser attaches to the app container in index.html
   scene: MainScene,
 });
+
+// Create the contour-traced keyboard overlay (vector outlines from keyboard.png)
+createContourKeyboard();
