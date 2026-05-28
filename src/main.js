@@ -38,6 +38,6 @@ new Phaser.Game({
     width: window.innerWidth,
     height: window.innerHeight,
   },
-  parent: "app",
+  parent: "game",
   scene: MainScene,
 });
