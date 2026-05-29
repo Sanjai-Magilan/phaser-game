@@ -38,7 +38,7 @@ export async function createContourKeyboard() {
   overlay.style.left = "50%";
   overlay.style.top = "72%";
   overlay.style.transform =
-    "translate(-50%,-50%) rotateX(22deg) rotateZ(-8deg)";
+    "translate(-50%,-50%) rotateX(22deg) rotateZ(0deg)";
   overlay.style.width = "min(1400px,94vw)";
   overlay.style.zIndex = "9999";
   overlay.style.pointerEvents = "auto";
