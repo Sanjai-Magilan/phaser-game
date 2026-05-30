@@ -19,12 +19,12 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 155;
-  const keyH = 138;
-  const gapX = 39;
-  const gapY = 32;
-  const startX = 130;
-  const startY = 120;
+  const keyW = 60;
+  const keyH = 35;
+  const gapX = 10;
+  const gapY = 10;
+  const startX = 0;
+  const startY = 20;
   const offsets = [0, 70, 140];
   const rows = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -36,13 +36,15 @@ export async function createContourKeyboard() {
   overlay.id = "keyboard-overlay";
   overlay.style.position = "absolute";
   overlay.style.left = "50%";
-  overlay.style.top = "72%";
-  overlay.style.transform =
-    "translate(-50%,-50%) rotateX(22deg) rotateZ(0deg)";
-  overlay.style.width = "min(1400px,94vw)";
+  overlay.style.top = "78%"; //////////////////////////////////////////////////////
+  overlay.style.transform = "translate(-50%,-50%) rotateX(22deg) rotateZ(0deg)";
+  overlay.style.width = "min(850px,75vw)"; ////////////////////////////////////////
   overlay.style.zIndex = "9999";
   overlay.style.pointerEvents = "auto";
-  const svg = document.createElementNS(NS, "svg");
+  overlay.style.background = "rgba(35,35,45,0.05)"; ///////////////////////////////
+  overlay.style.backdropFilter = "blur(2px)";
+  overlay.style.webkitBackdropFilter = "blur(2px)";
+  const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
@@ -57,32 +59,72 @@ export async function createContourKeyboard() {
   imgEl.setAttribute("y", "0");
   imgEl.setAttribute("width", String(W));
   imgEl.setAttribute("height", String(H));
-  svg.appendChild(imgEl);
+  imgEl.style.opacity = "0.55"; //////////////////////////////////////////////////////////////////////
 
   function makeKey(id, x, y, w, h) {
-    const clip = document.createElementNS(NS, "clipPath");
-    clip.id = `clip-${id}`;
-    const r = document.createElementNS(NS, "rect");
-    r.setAttribute("x", String(x));
-    r.setAttribute("y", String(y));
-    r.setAttribute("width", String(w));
-    r.setAttribute("height", String(h));
-    r.setAttribute("rx", "20");
-    clip.appendChild(r);
-    defs.appendChild(clip);
-
     const g = document.createElementNS(NS, "g");
     g.classList.add("key-group");
     g.setAttribute("data-key", id);
+    const keyRect = document.createElementNS(NS, "polygon");
 
-    const imgCopy = document.createElementNS(NS, "image");
-    imgCopy.setAttributeNS("http://www.w3.org/1999/xlink", "href", src);
-    imgCopy.setAttribute("x", "0");
-    imgCopy.setAttribute("y", "0");
-    imgCopy.setAttribute("width", String(W));
-    imgCopy.setAttribute("height", String(H));
-    imgCopy.setAttribute("clip-path", `url(#clip-${id})`);
-    g.appendChild(imgCopy);
+    const inset = 0;
+
+    keyRect.setAttribute(
+      "points",
+      `${x + inset},${y}
+   ${x + w - inset},${y}
+   ${x + w},${y + h}
+   ${x},${y + h}`,
+    );
+    keyRect.setAttribute("fill", "#ffffff");
+    keyRect.setAttribute("fill-opacity", "0.04");
+
+    keyRect.setAttribute("stroke", "#cfd5ff");
+
+    keyRect.setAttribute("stroke-width", "1.2");
+
+    g.appendChild(keyRect);
+    const shine = document.createElementNS(NS, "polygon");
+
+shine.setAttribute(
+  "points",
+  `${x + inset + 5},${y + 4}
+   ${x + w - inset - 5},${y + 4}
+   ${x + w - 10},${y + 16}
+   ${x + 10},${y + 16}`
+);
+
+shine.setAttribute("fill", "#ffffff");
+shine.setAttribute("fill-opacity", "0.04");
+
+g.appendChild(shine);
+    const txt = document.createElementNS(NS, "text");
+
+    txt.setAttribute("x", String(x + w / 2));
+    txt.setAttribute("y", String(y + h / 2 + 5));
+
+    txt.setAttribute("text-anchor", "middle");
+    txt.setAttribute("fill", "#d7d7d7");
+
+    txt.setAttribute("font-size", "14");
+    txt.setAttribute("font-family", "Arial");
+    txt.setAttribute("font-weight", "600");
+
+    txt.textContent = id.split("-")[0];
+
+    g.appendChild(txt);
+
+    if (id.startsWith("F")) {
+  keyRect.setAttribute("stroke", "#f4d77a");
+
+  keyRect.setAttribute("fill", "#f4d77a");
+  keyRect.setAttribute("fill-opacity", "0.08");
+
+  txt.setAttribute("fill", "#ffe49b");
+
+  keyRect.style.filter =
+    "drop-shadow(0 0 6px rgba(244,215,122,0.4))";
+}
 
     const hit = document.createElementNS(NS, "rect");
     hit.setAttribute("x", String(x));
@@ -120,10 +162,10 @@ export async function createContourKeyboard() {
   });
 
   // Space row: shift, spacebar, shift
-  const shiftW = 335;
-  const spaceBarW = 1050;
+  const shiftW = 150;
+  const spaceBarW = 450;
   const spaceBarY = startY + 3 * (keyH + gapY);
-  const gap = 50;
+  const gap = 15;
 
   const g1 = makeKey("LSHIFT", startX, spaceBarY, shiftW, keyH);
   svg.appendChild(g1);
