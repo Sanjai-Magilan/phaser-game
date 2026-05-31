@@ -19,13 +19,13 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 60;
-  const keyH = 35;
+  const keyW = 50;
+  const keyH = 50;
   const gapX = 10;
   const gapY = 10;
-  const startX = 0;
-  const startY = 20;
-  const offsets = [0, 70, 140];
+  const startX = 120;
+  const startY = 40;
+  const offsets = [0, 30, 60];
   const rows = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", ";"],
@@ -36,9 +36,9 @@ export async function createContourKeyboard() {
   overlay.id = "keyboard-overlay";
   overlay.style.position = "absolute";
   overlay.style.left = "50%";
-  overlay.style.top = "78%"; //////////////////////////////////////////////////////
+  overlay.style.top = "72%"; //////////////////////////////////////////////////////
   overlay.style.transform = "translate(-50%,-50%) rotateX(22deg) rotateZ(0deg)";
-  overlay.style.width = "min(850px,75vw)"; ////////////////////////////////////////
+  overlay.style.width = "min(1100px,90vw)"; ////////////////////////////////////////
   overlay.style.zIndex = "9999";
   overlay.style.pointerEvents = "auto";
   overlay.style.background = "rgba(35,35,45,0.05)"; ///////////////////////////////
@@ -65,39 +65,38 @@ export async function createContourKeyboard() {
     const g = document.createElementNS(NS, "g");
     g.classList.add("key-group");
     g.setAttribute("data-key", id);
-    const keyRect = document.createElementNS(NS, "polygon");
+    const keyRect = document.createElementNS(NS, "rect");
 
     const inset = 0;
 
-    keyRect.setAttribute(
-      "points",
-      `${x + inset},${y}
-   ${x + w - inset},${y}
-   ${x + w},${y + h}
-   ${x},${y + h}`,
-    );
+    keyRect.setAttribute("x", String(x));
+    keyRect.setAttribute("y", String(y));
+    keyRect.setAttribute("width", String(w));
+    keyRect.setAttribute("height", String(h));
+    keyRect.setAttribute("rx", "3");
+    keyRect.setAttribute("ry", "3");
     keyRect.setAttribute("fill", "#ffffff");
-    keyRect.setAttribute("fill-opacity", "0.04");
+    keyRect.setAttribute("fill-opacity", "0.02");
 
-    keyRect.setAttribute("stroke", "#cfd5ff");
+    keyRect.setAttribute("stroke", "rgba(255,255,255,0.18)");
 
-    keyRect.setAttribute("stroke-width", "1.2");
+    keyRect.setAttribute("stroke-width", "1");
 
     g.appendChild(keyRect);
-    const shine = document.createElementNS(NS, "polygon");
+  //   const shine = document.createElementNS(NS, "polygon");
 
-shine.setAttribute(
-  "points",
-  `${x + inset + 5},${y + 4}
-   ${x + w - inset - 5},${y + 4}
-   ${x + w - 10},${y + 16}
-   ${x + 10},${y + 16}`
-);
+  //   shine.setAttribute(
+  //     "points",
+  //     `${x + inset + 5},${y + 4}
+  //  ${x + w - inset - 5},${y + 4}
+  //  ${x + w - 10},${y + 16}
+  //  ${x + 10},${y + 16}`,
+  //   );
 
-shine.setAttribute("fill", "#ffffff");
-shine.setAttribute("fill-opacity", "0.04");
+  //   shine.setAttribute("fill", "#ffffff");
+  //   shine.setAttribute("fill-opacity", "0.04");
 
-g.appendChild(shine);
+  //   g.appendChild(shine);
     const txt = document.createElementNS(NS, "text");
 
     txt.setAttribute("x", String(x + w / 2));
@@ -106,7 +105,7 @@ g.appendChild(shine);
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("fill", "#d7d7d7");
 
-    txt.setAttribute("font-size", "14");
+    txt.setAttribute("font-size", "12");
     txt.setAttribute("font-family", "Arial");
     txt.setAttribute("font-weight", "600");
 
@@ -115,16 +114,15 @@ g.appendChild(shine);
     g.appendChild(txt);
 
     if (id.startsWith("F")) {
-  keyRect.setAttribute("stroke", "#f4d77a");
+      keyRect.setAttribute("stroke", "#f4d77a");
 
-  keyRect.setAttribute("fill", "#f4d77a");
-  keyRect.setAttribute("fill-opacity", "0.08");
+      keyRect.setAttribute("fill", "#f4d77a");
+      keyRect.setAttribute("fill-opacity", "0.08");
 
-  txt.setAttribute("fill", "#ffe49b");
+      txt.setAttribute("fill", "#ffe49b");
 
-  keyRect.style.filter =
-    "drop-shadow(0 0 6px rgba(244,215,122,0.4))";
-}
+      keyRect.style.filter = "drop-shadow(0 0 10px rgba(244,215,122,0.6))";
+    }
 
     const hit = document.createElementNS(NS, "rect");
     hit.setAttribute("x", String(x));
@@ -162,16 +160,16 @@ g.appendChild(shine);
   });
 
   // Space row: shift, spacebar, shift
-  const shiftW = 150;
-  const spaceBarW = 450;
+  const shiftW = 170;
+  const spaceBarW = 520;
   const spaceBarY = startY + 3 * (keyH + gapY);
   const gap = 15;
 
-  const g1 = makeKey("LSHIFT", startX, spaceBarY, shiftW, keyH);
+  const g1 = makeKey("SHIFT", startX, spaceBarY, shiftW, keyH);
   svg.appendChild(g1);
 
   const g2 = makeKey(
-    "SPACE",
+    "",
     startX + shiftW + gap,
     spaceBarY,
     spaceBarW,
@@ -180,7 +178,7 @@ g.appendChild(shine);
   svg.appendChild(g2);
 
   const g3 = makeKey(
-    "RSHIFT",
+    "SHIFT",
     startX + shiftW + gap + spaceBarW + gap,
     spaceBarY,
     shiftW,
