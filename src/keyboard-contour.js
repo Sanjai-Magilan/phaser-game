@@ -119,9 +119,12 @@ export async function createContourKeyboard() {
 
     if (label === "SPACE") {
       txt.textContent = "";
+    } else if (label === "LSHIFT" || label === "RSHIFT") {
+      txt.textContent = "SHIFT";
     } else {
       txt.textContent = label;
     }
+
     
     g.appendChild(txt);
 
@@ -186,7 +189,7 @@ export async function createContourKeyboard() {
   const bottomRowOffset = -30;
 
   const g1 = makeKey(
-    "SHIFT",
+    "LSHIFT",
     startX + bottomRowOffset,
     spaceBarY,
     shiftW,
@@ -204,7 +207,7 @@ export async function createContourKeyboard() {
   svg.appendChild(g2);
 
   const g3 = makeKey(
-    "SHIFT",
+    "RSHIFT",
     startX + bottomRowOffset + shiftW + gap + spaceBarW + gap,
     spaceBarY,
     shiftW,
@@ -223,11 +226,12 @@ export async function createContourKeyboard() {
   window.addEventListener("keydown", (e) => {
     let keyName = e.key.toUpperCase();
 
-    if (e.key === "Shift") {
-      keyName = "SHIFT";
+    if (e.code === "ShiftLeft") {
+      keyName = "LSHIFT";
     }
-    if (e.code === "Space") {
-      keyName = "SPACE";
+
+    if (e.code === "ShiftRight") {
+      keyName = "RSHIFT";
     }
     const key = keyMap[keyName];
 
@@ -238,11 +242,12 @@ export async function createContourKeyboard() {
   window.addEventListener("keyup", (e) => {
     let keyName = e.key.toUpperCase();
 
-    if (e.key === "Shift") {
-      keyName = "SHIFT";
+    if (e.code === "ShiftLeft") {
+      keyName = "LSHIFT";
     }
-    if (e.code === "Space") {
-      keyName = "SPACE";
+
+    if (e.code === "ShiftRight") {
+      keyName = "RSHIFT";
     }
     const key = keyMap[keyName];
 
