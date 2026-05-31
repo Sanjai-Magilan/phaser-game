@@ -115,8 +115,14 @@ export async function createContourKeyboard() {
     txt.setAttribute("font-family", "Arial");
     txt.setAttribute("font-weight", "600");
 
-    txt.textContent = id.split("-")[0];
+    const label = id.split("-")[0];
 
+    if (label === "SPACE") {
+      txt.textContent = "";
+    } else {
+      txt.textContent = label;
+    }
+    
     g.appendChild(txt);
 
     if (id.startsWith("F")) {
@@ -140,8 +146,15 @@ export async function createContourKeyboard() {
     hit.style.cursor = "pointer";
     g.appendChild(hit);
 
-    const press = () => g.setAttribute("transform", "translate(0,12)");
-    const release = () => g.setAttribute("transform", "translate(0,0)");
+    const press = () => {
+      g.setAttribute("transform", "translate(0,6)");
+    };
+
+    const release = () => {
+      g.setAttribute("transform", "translate(0,0)");
+    };
+    g.press = press;
+    g.release = release;
 
     hit.addEventListener("mousedown", press);
     hit.addEventListener("mouseup", release);
@@ -182,7 +195,7 @@ export async function createContourKeyboard() {
   svg.appendChild(g1);
 
   const g2 = makeKey(
-    "",
+    "SPACE",
     startX + bottomRowOffset + shiftW + gap,
     spaceBarY,
     spaceBarW,
@@ -201,4 +214,40 @@ export async function createContourKeyboard() {
 
   overlay.appendChild(svg);
   document.body.appendChild(overlay);
+  const keyMap = {};
+
+  svg.querySelectorAll(".key-group").forEach((key) => {
+    const name = key.dataset.key.split("-")[0];
+    keyMap[name.toUpperCase()] = key;
+  });
+  window.addEventListener("keydown", (e) => {
+    let keyName = e.key.toUpperCase();
+
+    if (e.key === "Shift") {
+      keyName = "SHIFT";
+    }
+    if (e.code === "Space") {
+      keyName = "SPACE";
+    }
+    const key = keyMap[keyName];
+
+    if (key && key.press) {
+      key.press();
+    }
+  });
+  window.addEventListener("keyup", (e) => {
+    let keyName = e.key.toUpperCase();
+
+    if (e.key === "Shift") {
+      keyName = "SHIFT";
+    }
+    if (e.code === "Space") {
+      keyName = "SPACE";
+    }
+    const key = keyMap[keyName];
+
+    if (key && key.release) {
+      key.release();
+    }
+  });
 }
