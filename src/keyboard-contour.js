@@ -125,7 +125,6 @@ export async function createContourKeyboard() {
       txt.textContent = label;
     }
 
-    
     g.appendChild(txt);
 
     if (id.startsWith("F")) {
@@ -233,6 +232,9 @@ export async function createContourKeyboard() {
     if (e.code === "ShiftRight") {
       keyName = "RSHIFT";
     }
+    if (e.code === "Space") {
+      keyName = "SPACE";
+    }
     const key = keyMap[keyName];
 
     if (key && key.press) {
@@ -248,6 +250,10 @@ export async function createContourKeyboard() {
 
     if (e.code === "ShiftRight") {
       keyName = "RSHIFT";
+    }
+
+    if (e.code === "Space") {
+      keyName = "SPACE";
     }
     const key = keyMap[keyName];
 
