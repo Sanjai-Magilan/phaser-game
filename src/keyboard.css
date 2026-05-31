@@ -59,7 +59,11 @@ backdrop-filter: blur(3px);
 #keyboard-overlay::before{
   content: '';
   position: absolute;
-  inset: 0;
+
+  top: 20px;
+  bottom: -20px;
+  left: 70px;
+  right: 80px;
   border-radius: 28px;
 
   border: 2px solid rgba(255,255,255,0.18);
