@@ -23,7 +23,7 @@ export async function createContourKeyboard() {
   const keyH = 41;
   const gapX = 10;
   const gapY = 10;
-  const startX = 120;
+  const startX = 100;
   const startY = 40;
   const offsets = [0, 30, 60];
   const rows = [
@@ -52,7 +52,7 @@ export async function createContourKeyboard() {
   overlay.style.backdropFilter = "blur(2px)";
   overlay.style.webkitBackdropFilter = "blur(2px)";
   const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
-  svg.setAttribute("viewBox", `0 0 ${W-50} ${H-35}`);
+  svg.setAttribute("viewBox", `0 0 ${W-130} ${H-35}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.display = "block";
