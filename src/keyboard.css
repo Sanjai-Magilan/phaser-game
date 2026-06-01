@@ -4,7 +4,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%) rotateX(18deg) rotateZ(-6deg);
-  perspective: 1200px;
+  perspective: 1800px;
+  transform-style: preserve-3d;
   width: min(1200px, 92vw);
   max-width: 1400px;
   pointer-events: auto;

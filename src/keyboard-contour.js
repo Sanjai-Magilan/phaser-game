@@ -19,8 +19,8 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 50;
-  const keyH = 50;
+  const keyW = 40;
+  const keyH = 41;
   const gapX = 10;
   const gapY = 10;
   const startX = 120;
@@ -42,17 +42,17 @@ export async function createContourKeyboard() {
   // overlay.style.width = "auto";
   // overlay.style.transform = "none";
   overlay.style.left = "50%";
-  overlay.style.top = "72%"; //////////////////////////////////////////////////////
+  overlay.style.top = "76%"; //////////////////////////////////////////////////////
   overlay.style.transform =
-    "translate(-50%,-50%) perspective(1200px) rotateX(55deg)";
-  overlay.style.width = "min(950px,75vw)"; ////////////////////////////////////////
+    "translate(-50%,-50%) perspective(1400px) rotateX(35deg)";
+  overlay.style.width = "min(850px,65vw)"; ////////////////////////////////////////
   overlay.style.zIndex = "9999";
   overlay.style.pointerEvents = "auto";
   overlay.style.background = "rgba(35,35,45,0.05)"; ///////////////////////////////
   overlay.style.backdropFilter = "blur(2px)";
   overlay.style.webkitBackdropFilter = "blur(2px)";
   const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.setAttribute("viewBox", `0 0 ${W-50} ${H-35}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.display = "block";
@@ -85,9 +85,9 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("fill", "#ffffff");
     keyRect.setAttribute("fill-opacity", "0.02");
 
-    keyRect.setAttribute("stroke", "rgba(255,255,255,0.18)");
+    keyRect.setAttribute("stroke", "rgba(255,255,255,0.28)");
 
-    keyRect.setAttribute("stroke-width", "1");
+    keyRect.setAttribute("stroke-width", "2");
 
     g.appendChild(keyRect);
     //   const shine = document.createElementNS(NS, "polygon");
@@ -127,17 +127,6 @@ export async function createContourKeyboard() {
     }
 
     g.appendChild(txt);
-
-    if (id.startsWith("F")) {
-      keyRect.setAttribute("stroke", "#f4d77a");
-
-      keyRect.setAttribute("fill", "#f4d77a");
-      keyRect.setAttribute("fill-opacity", "0.08");
-
-      txt.setAttribute("fill", "#ffe49b");
-
-      keyRect.style.filter = "drop-shadow(0 0 10px rgba(244,215,122,0.6))";
-    }
 
     const hit = document.createElementNS(NS, "rect");
     hit.setAttribute("x", String(x));
@@ -182,11 +171,11 @@ export async function createContourKeyboard() {
   });
 
   // Space row: shift, spacebar, shift
-  const shiftW = 140;
-  const spaceBarW = 325;
+  const shiftW = 120;
+  const spaceBarW = 275;
   const spaceBarY = startY + 3 * (keyH + gapY);
   const gap = 10;
-  const bottomRowOffset = -30;
+  const bottomRowOffset = -20;
 
   const g1 = makeKey(
     "LSHIFT",
