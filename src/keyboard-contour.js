@@ -85,23 +85,25 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("fill", "#ffffff");
     keyRect.setAttribute("fill-opacity", "0.02");
 
-    keyRect.setAttribute("stroke", "rgba(220,225,255,0.10)");
+    keyRect.setAttribute("stroke", "rgba(220,225,255,0.08)");
     keyRect.setAttribute("stroke-width", "1");
-
     g.appendChild(keyRect);
-    const bottomGlow = document.createElementNS(NS, "line");
+    const bevel = document.createElementNS(NS, "line");
 
-    bottomGlow.setAttribute("x1", String(x + 2));
-    bottomGlow.setAttribute("y1", String(y + h - 1));
+    bevel.setAttribute("x1", String(x + 4));
 
-    bottomGlow.setAttribute("x2", String(x + w - 2));
-    bottomGlow.setAttribute("y2", String(y + h - 1));
+    bevel.setAttribute("y1", String(y + h - 2));
 
-    bottomGlow.setAttribute("stroke", "rgba(255,255,255,0.10)");
+    bevel.setAttribute("x2", String(x + w - 4));
 
-    bottomGlow.setAttribute("stroke-width", "1");
+    bevel.setAttribute("y2", String(y + h - 2));
 
-    g.appendChild(bottomGlow);
+    bevel.setAttribute("stroke", "rgba(255,255,255,0.18)");
+
+    bevel.setAttribute("stroke-width", "1");
+
+    g.appendChild(bevel);
+
     //   const shine = document.createElementNS(NS, "polygon");
 
     //   shine.setAttribute(
@@ -146,9 +148,10 @@ export async function createContourKeyboard() {
       keyRect.setAttribute("fill-opacity", "0.10");
 
       keyRect.style.filter = "drop-shadow(0 0 12px rgba(247,215,116,0.8))";
-      bottomGlow.setAttribute("stroke", "#f7d774");
+      bevel.setAttribute("stroke", "#f7d774");
+      // bottomGlow.setAttribute("stroke", "#f7d774");
 
-      bottomGlow.setAttribute("stroke-width", "2");
+      // bottomGlow.setAttribute("stroke-width", "2");
     };
 
     g.unhighlight = () => {
@@ -158,9 +161,13 @@ export async function createContourKeyboard() {
       keyRect.setAttribute("fill-opacity", "0.02");
 
       keyRect.style.filter = "";
-      bottomGlow.setAttribute("stroke", "rgba(255,255,255,0.10)");
+      bevel.setAttribute(
+  "stroke",
+  "rgba(255,255,255,0.18)"
+);
+      // bottomGlow.setAttribute("stroke", "rgba(255,255,255,0.10)");
 
-      bottomGlow.setAttribute("stroke-width", "1");
+      // bottomGlow.setAttribute("stroke-width", "1");
     };
 
     const hit = document.createElementNS(NS, "rect");
