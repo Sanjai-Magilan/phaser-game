@@ -223,7 +223,42 @@ export async function createContourKeyboard() {
     keyMap[name.toUpperCase()] = key;
   });
   window.addEventListener("keydown", (e) => {
-    e.preventDefault();
+    const blockedKeys = [
+      "Q",
+      "W",
+      "E",
+      "R",
+      "T",
+      "Y",
+      "U",
+      "I",
+      "O",
+      "P",
+      "A",
+      "S",
+      "D",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "Z",
+      "X",
+      "C",
+      "V",
+      "B",
+      "N",
+      "M",
+      ";",
+      "/",
+      "Shift",
+      " ",
+    ];
+
+    if (blockedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
     let keyName = e.key.toUpperCase();
 
     if (e.code === "ShiftLeft") {
@@ -243,6 +278,42 @@ export async function createContourKeyboard() {
     }
   });
   window.addEventListener("keyup", (e) => {
+    const blockedKeys = [
+      "Q",
+      "W",
+      "E",
+      "R",
+      "T",
+      "Y",
+      "U",
+      "I",
+      "O",
+      "P",
+      "A",
+      "S",
+      "D",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "Z",
+      "X",
+      "C",
+      "V",
+      "B",
+      "N",
+      "M",
+      ";",
+      "/",
+      "Shift",
+      " ",
+    ];
+
+    if (blockedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
     let keyName = e.key.toUpperCase();
 
     if (e.code === "ShiftLeft") {
