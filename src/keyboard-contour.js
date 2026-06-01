@@ -19,11 +19,11 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 40;
-  const keyH = 41;
+  const keyW = 35;
+  const keyH = 36;
   const gapX = 10;
   const gapY = 10;
-  const startX = 100;
+  const startX = 110;
   const startY = 40;
   const offsets = [0, 30, 60];
   const rows = [
@@ -52,7 +52,7 @@ export async function createContourKeyboard() {
   overlay.style.backdropFilter = "blur(2px)";
   overlay.style.webkitBackdropFilter = "blur(2px)";
   const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
-  svg.setAttribute("viewBox", `0 0 ${W-130} ${H-35}`);
+  svg.setAttribute("viewBox", `0 0 ${W - 150} ${H - 45}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.display = "block";
@@ -80,16 +80,28 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("y", String(y));
     keyRect.setAttribute("width", String(w));
     keyRect.setAttribute("height", String(h));
-    keyRect.setAttribute("rx", "3");
-    keyRect.setAttribute("ry", "3");
+    keyRect.setAttribute("rx", "2");
+    keyRect.setAttribute("ry", "2");
     keyRect.setAttribute("fill", "#ffffff");
-    keyRect.setAttribute("fill-opacity", "0.02");
+    keyRect.setAttribute("fill-opacity", "0.05");
 
-    keyRect.setAttribute("stroke", "rgba(255,255,255,0.28)");
-
-    keyRect.setAttribute("stroke-width", "2");
+    keyRect.setAttribute("stroke", "rgba(220,225,255,0.35)");
+    keyRect.setAttribute("stroke-width", "1.5");
 
     g.appendChild(keyRect);
+    const bottomGlow = document.createElementNS(NS, "rect");
+
+    bottomGlow.setAttribute("x", String(x + 1));
+    bottomGlow.setAttribute("y", String(y + h - 4));
+
+    bottomGlow.setAttribute("width", String(w - 2));
+    bottomGlow.setAttribute("height", "3");
+
+    bottomGlow.setAttribute("rx", "2");
+
+    bottomGlow.setAttribute("fill", "rgba(220,225,255,0.55)");
+
+    g.appendChild(bottomGlow);
     //   const shine = document.createElementNS(NS, "polygon");
 
     //   shine.setAttribute(
@@ -171,8 +183,8 @@ export async function createContourKeyboard() {
   });
 
   // Space row: shift, spacebar, shift
-  const shiftW = 120;
-  const spaceBarW = 275;
+  const shiftW = 115;
+  const spaceBarW = 240;
   const spaceBarY = startY + 3 * (keyH + gapY);
   const gap = 10;
   const bottomRowOffset = -20;
