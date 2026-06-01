@@ -80,8 +80,8 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("y", String(y));
     keyRect.setAttribute("width", String(w));
     keyRect.setAttribute("height", String(h));
-    keyRect.setAttribute("rx", "2");
-    keyRect.setAttribute("ry", "2");
+    keyRect.setAttribute("rx", "4");
+    keyRect.setAttribute("ry", "4");
     keyRect.setAttribute("fill", "#ffffff");
     keyRect.setAttribute("fill-opacity", "0.02");
 
