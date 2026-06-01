@@ -223,6 +223,7 @@ export async function createContourKeyboard() {
     keyMap[name.toUpperCase()] = key;
   });
   window.addEventListener("keydown", (e) => {
+    e.preventDefault();
     let keyName = e.key.toUpperCase();
 
     if (e.code === "ShiftLeft") {
