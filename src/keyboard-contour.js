@@ -19,13 +19,13 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 35;
-  const keyH = 36;
-  const gapX = 5;
-  const gapY = 5;
-  const startX = 100;
-  const startY = 40;
-  const offsets = [0, 12, 30];
+  const keyW = 21;
+  const keyH = 21;
+  const gapX = 3;
+  const gapY = 2.5;
+  const startX = 52;
+  const startY = 18;
+  const offsets = [0, 10, 20];
   const rows = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L", ";"],
@@ -52,7 +52,7 @@ export async function createContourKeyboard() {
   overlay.style.backdropFilter = "blur(2px)";
   overlay.style.webkitBackdropFilter = "blur(2px)";
   const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
-  svg.setAttribute("viewBox", `0 0 ${W - 240} ${H - 70}`);
+  svg.setAttribute("viewBox", `0 0 ${W - 510} ${H - 165}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.display = "block";
@@ -80,8 +80,8 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("y", String(y));
     keyRect.setAttribute("width", String(w));
     keyRect.setAttribute("height", String(h));
-    keyRect.setAttribute("rx", "4");
-    keyRect.setAttribute("ry", "4");
+    keyRect.setAttribute("rx", "2");
+    keyRect.setAttribute("ry", "2");
     keyRect.setAttribute("fill", "#ffffff");
     keyRect.setAttribute("fill-opacity", "0.02");
 
@@ -121,12 +121,12 @@ export async function createContourKeyboard() {
     const txt = document.createElementNS(NS, "text");
 
     txt.setAttribute("x", String(x + w / 2));
-    txt.setAttribute("y", String(y + h / 2 + 5));
+    txt.setAttribute("y", String(y + h / 2 + 2));
 
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("fill", "rgba(255,255,255,0.55)");
 
-    txt.setAttribute("font-size", "12");
+    txt.setAttribute("font-size", "6px");
     txt.setAttribute("font-family", "Arial");
     txt.setAttribute("font-weight", "600");
 
@@ -217,11 +217,11 @@ export async function createContourKeyboard() {
   });
 
   // Space row: shift, spacebar, shift
-  const shiftW = 90;
-  const spaceBarW = 220;
+  const shiftW = 55;
+  const spaceBarW = 130;
   const spaceBarY = startY + 3 * (keyH + gapY);
-  const gap = 5;
-  const bottomRowOffset = -20;
+  const gap = 3;
+  const bottomRowOffset = -14;
 
   const g1 = makeKey(
     "LSHIFT",
