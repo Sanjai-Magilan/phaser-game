@@ -90,17 +90,17 @@ export async function createContourKeyboard() {
     g.appendChild(keyRect);
     const bevel = document.createElementNS(NS, "line");
 
-    bevel.setAttribute("x1", String(x + 4));
+    bevel.setAttribute("x1", String(x ));
 
     bevel.setAttribute("y1", String(y + h - 2));
 
-    bevel.setAttribute("x2", String(x + w - 4));
+    bevel.setAttribute("x2", String(x + w ));
 
     bevel.setAttribute("y2", String(y + h - 2));
 
     bevel.setAttribute("stroke", "rgba(255,255,255,0.18)");
 
-    bevel.setAttribute("stroke-width", "1");
+    bevel.setAttribute("stroke-width", "3");
 
     g.appendChild(bevel);
 
@@ -161,10 +161,7 @@ export async function createContourKeyboard() {
       keyRect.setAttribute("fill-opacity", "0.02");
 
       keyRect.style.filter = "";
-      bevel.setAttribute(
-  "stroke",
-  "rgba(255,255,255,0.18)"
-);
+      bevel.setAttribute("stroke", "rgba(255,255,255,0.18)");
       // bottomGlow.setAttribute("stroke", "rgba(255,255,255,0.10)");
 
       // bottomGlow.setAttribute("stroke-width", "1");
