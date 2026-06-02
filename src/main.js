@@ -51,7 +51,11 @@ class MainScene extends Phaser.Scene {
         cy,
         r + padding * 0.18,
       );
-      const base = (a) => color.replace(/rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/, `rgba($1,$2,$3,${a})`);
+      const base = (a) =>
+        color.replace(
+          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
+          `rgba($1,$2,$3,${a})`,
+        );
       halo.addColorStop(0, base(0.72));
       halo.addColorStop(0.25, base(0.36));
       halo.addColorStop(0.6, base(0.12));
@@ -97,7 +101,7 @@ class MainScene extends Phaser.Scene {
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.strokeStyle = rimColor;
       ctx.lineWidth = Math.max(2, size * 0.035);
-      const rimAlpha = key.includes("gold") ? 0.48 : 0.30;
+      const rimAlpha = key.includes("gold") ? 0.48 : 0.3;
       ctx.globalAlpha = rimAlpha;
       ctx.stroke();
       ctx.globalAlpha = 1;
@@ -116,7 +120,13 @@ class MainScene extends Phaser.Scene {
         r * 0.46,
       );
       accent.addColorStop(0, accentColor);
-      accent.addColorStop(0.4, accentColor.replace(/rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/, "rgba($1,$2,$3,0.12)"));
+      accent.addColorStop(
+        0.4,
+        accentColor.replace(
+          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
+          "rgba($1,$2,$3,0.12)",
+        ),
+      );
       accent.addColorStop(1, "rgba(0,0,0,0)");
       ctx.beginPath();
       ctx.fillStyle = accent;
@@ -126,7 +136,7 @@ class MainScene extends Phaser.Scene {
       // highlight
       ctx.beginPath();
       ctx.fillStyle = "rgba(255,255,255,0.98)";
-      ctx.arc(cx - r * 0.34, cy - r * 0.40, r * 0.085, 0, Math.PI * 2);
+      ctx.arc(cx - r * 0.34, cy - r * 0.4, r * 0.085, 0, Math.PI * 2);
       ctx.fill();
 
       // letter
@@ -153,9 +163,23 @@ class MainScene extends Phaser.Scene {
     };
 
     const letters = ["F", "J"];
-    letters.forEach(l => {
-      createBubbleTexture(`gold_${l}`, goldStyle.size, goldStyle.color, goldStyle.letterColor, l, goldStyle.rim);
-      createBubbleTexture(`blue_${l}`, blueStyle.size, blueStyle.color, blueStyle.letterColor, l, blueStyle.rim);
+    letters.forEach((l) => {
+      createBubbleTexture(
+        `gold_${l}`,
+        goldStyle.size,
+        goldStyle.color,
+        goldStyle.letterColor,
+        l,
+        goldStyle.rim,
+      );
+      createBubbleTexture(
+        `blue_${l}`,
+        blueStyle.size,
+        blueStyle.color,
+        blueStyle.letterColor,
+        l,
+        blueStyle.rim,
+      );
     });
 
     const spacing = 50;
@@ -170,14 +194,15 @@ class MainScene extends Phaser.Scene {
 
     const getBubbleX = (index) => {
       const size = 240;
-      const totalWidth = this.maxBubbles * size + (this.maxBubbles - 1) * spacing;
+      const totalWidth =
+        this.maxBubbles * size + (this.maxBubbles - 1) * spacing;
       const startX = centerX - totalWidth / 2;
       return startX + index * (size + spacing) + size / 2;
     };
 
     const spawnBubble = (index, letter, animate = false) => {
       const isFirst = index === 0;
-      const key = `${isFirst ? 'gold' : 'blue'}_${letter}`;
+      const key = `${isFirst ? "gold" : "blue"}_${letter}`;
       const x = getBubbleX(index);
       const img = this.add.image(x, centerY, key).setDepth(10 - index);
       img.setScale(isFirst ? groupScale * 1.15 : groupScale);
@@ -190,7 +215,7 @@ class MainScene extends Phaser.Scene {
         alpha: isFirst ? 1 : 0.85,
         duration: animate ? 400 : 0,
         delay: animate ? index * 80 : 0,
-        ease: 'Cubic.easeOut'
+        ease: "Cubic.easeOut",
       });
 
       // floating animation
@@ -215,14 +240,21 @@ class MainScene extends Phaser.Scene {
     };
 
     this.selectionRing = this.add.graphics().setDepth(12);
-    
+
     const updateSelectionRing = () => {
       const activeImg = this.bubbleQueue[0];
       if (!activeImg) return;
-      
-      const ringRadius = Math.max(32, (activeImg.width * groupScale * 1.15) / 2 + 8);
+
+      const ringRadius = Math.max(
+        32,
+        (activeImg.width * groupScale * 1.15) / 2 + 8,
+      );
       this.selectionRing.clear();
-      this.selectionRing.lineStyle(Math.max(3, ringRadius * 0.06), 0xffffff, 0.9);
+      this.selectionRing.lineStyle(
+        Math.max(3, ringRadius * 0.06),
+        0xffffff,
+        0.9,
+      );
       this.selectionRing.strokeCircle(0, 0, ringRadius);
       this.selectionRing.setScale(0.9);
       this.selectionRing.setAlpha(1);
@@ -235,10 +267,14 @@ class MainScene extends Phaser.Scene {
         scale: 1.18,
         alpha: 0,
         duration: 400,
-        ease: 'Cubic.easeOut',
+        ease: "Cubic.easeOut",
         onComplete: () => {
           this.selectionRing.clear();
-          this.selectionRing.lineStyle(Math.max(2, ringRadius * 0.045), 0xffffff, 0.15);
+          this.selectionRing.lineStyle(
+            Math.max(2, ringRadius * 0.045),
+            0xffffff,
+            0.15,
+          );
           this.selectionRing.strokeCircle(0, 0, ringRadius);
           this.selectionRing.setAlpha(1);
           this.selectionRing.setScale(1);
@@ -256,8 +292,8 @@ class MainScene extends Phaser.Scene {
         scale: popped.scale * 1.8,
         alpha: 0,
         duration: 250,
-        ease: 'Back.easeOut',
-        onComplete: () => popped.destroy()
+        ease: "Back.easeOut",
+        onComplete: () => popped.destroy(),
       });
 
       // NO SHIFTING. Just highlight the next one in place.
@@ -265,14 +301,14 @@ class MainScene extends Phaser.Scene {
         const nextActive = this.bubbleQueue[0];
         nextActive.setTexture(`gold_${nextActive.letter}`);
         nextActive.setDepth(10);
-        
+
         // Update its scale and float tween to gold style
         this.tweens.add({
           targets: nextActive,
           scale: groupScale * 1.15,
           alpha: 1,
           duration: 200,
-          ease: 'Sine.easeOut'
+          ease: "Sine.easeOut",
         });
 
         if (nextActive.floatTween) nextActive.floatTween.stop();
@@ -306,17 +342,20 @@ class MainScene extends Phaser.Scene {
       }
     };
 
-    keyF.on('down', () => onKeyPress("F"));
-    keyJ.on('down', () => onKeyPress("J"));
+    keyF.on("down", () => onKeyPress("F"));
+    keyJ.on("down", () => onKeyPress("J"));
 
     // simple beep using WebAudio
     this.playBeep = () => {
       try {
-        if (!this._audioCtx) this._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (!this._audioCtx)
+          this._audioCtx = new (
+            window.AudioContext || window.webkitAudioContext
+          )();
         const ctx = this._audioCtx;
         const o = ctx.createOscillator();
         const g = ctx.createGain();
-        o.type = 'sine';
+        o.type = "sine";
         o.frequency.value = 880;
         g.gain.value = 0.0001;
         o.connect(g);
@@ -327,10 +366,8 @@ class MainScene extends Phaser.Scene {
         o.start(now);
         g.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
         o.stop(now + 0.17);
-      } catch (e) {
-      }
+      } catch (e) {}
     };
-
   }
 }
 
