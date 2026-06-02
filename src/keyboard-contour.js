@@ -19,7 +19,7 @@ export async function createContourKeyboard() {
   const W = img.naturalWidth,
     H = img.naturalHeight;
   // Measured key dimensions from keyboard.png (2012x632)
-  const keyW = 21;
+  const keyW = 20;
   const keyH = 21;
   const gapX = 3;
   const gapY = 2.5;
@@ -52,7 +52,7 @@ export async function createContourKeyboard() {
   overlay.style.backdropFilter = "blur(2px)";
   overlay.style.webkitBackdropFilter = "blur(2px)";
   const svg = document.createElementNS(NS, "svg"); /////////////////////////////////
-  svg.setAttribute("viewBox", `0 0 ${W - 510} ${H - 165}`);
+  svg.setAttribute("viewBox", `0 0 ${W - 520} ${H - 165}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
   svg.style.display = "block";
@@ -71,6 +71,7 @@ export async function createContourKeyboard() {
   function makeKey(id, x, y, w, h) {
     const g = document.createElementNS(NS, "g");
     g.classList.add("key-group");
+    g.style.transition = "transform 120ms cubic-bezier(.2,.8,.2,1)";
     g.setAttribute("data-key", id);
     const keyRect = document.createElementNS(NS, "rect");
 
@@ -83,22 +84,24 @@ export async function createContourKeyboard() {
     keyRect.setAttribute("rx", "2");
     keyRect.setAttribute("ry", "2");
     keyRect.setAttribute("fill", "#ffffff");
-    keyRect.setAttribute("fill-opacity", "0.02");
+    keyRect.setAttribute("fill-opacity", "0.03");
 
-    keyRect.setAttribute("stroke", "rgba(220,225,255,0.08)");
+    keyRect.setAttribute("stroke", "rgba(225,225,255,0.18)");
     keyRect.setAttribute("stroke-width", "1");
+    keyRect.style.transition =
+      "fill 120ms ease-out, stroke 120ms ease-out, filter 120ms ease-out";
     g.appendChild(keyRect);
     const bevel = document.createElementNS(NS, "line");
 
-    bevel.setAttribute("x1", String(x ));
+    bevel.setAttribute("x1", String(x + 0.5));
 
     bevel.setAttribute("y1", String(y + h - 2));
 
-    bevel.setAttribute("x2", String(x + w ));
+    bevel.setAttribute("x2", String(x + w - 0.5));
 
     bevel.setAttribute("y2", String(y + h - 2));
 
-    bevel.setAttribute("stroke", "rgba(255,255,255,0.18)");
+    bevel.setAttribute("stroke", "rgba(225,225,255,0.18)");
 
     bevel.setAttribute("stroke-width", "3");
 
@@ -148,7 +151,11 @@ export async function createContourKeyboard() {
       keyRect.setAttribute("fill-opacity", "0.10");
 
       keyRect.style.filter = "drop-shadow(0 0 12px rgba(247,215,116,0.8))";
+      keyRect.setAttribute("fill", "#f7d774");
+      keyRect.setAttribute("fill-opacity", "0.08");
       bevel.setAttribute("stroke", "#f7d774");
+      txt.setAttribute("fill", "#f7d774");
+      txt.style.transition = "fill 120ms ease";
       // bottomGlow.setAttribute("stroke", "#f7d774");
 
       // bottomGlow.setAttribute("stroke-width", "2");
@@ -158,10 +165,13 @@ export async function createContourKeyboard() {
       keyRect.setAttribute("stroke", "rgba(255,255,255,0.10)");
 
       keyRect.setAttribute("fill", "#ffffff");
-      keyRect.setAttribute("fill-opacity", "0.02");
+      keyRect.setAttribute("fill-opacity", "0.03");
 
       keyRect.style.filter = "";
+      keyRect.setAttribute("fill", "#ffffff");
+      keyRect.setAttribute("fill-opacity", "0.03");
       bevel.setAttribute("stroke", "rgba(255,255,255,0.18)");
+      txt.setAttribute("fill", "rgba(255,255,255,0.55)");
       // bottomGlow.setAttribute("stroke", "rgba(255,255,255,0.10)");
 
       // bottomGlow.setAttribute("stroke-width", "1");
@@ -178,7 +188,7 @@ export async function createContourKeyboard() {
     g.appendChild(hit);
 
     const press = () => {
-      g.setAttribute("transform", "translate(0,6)");
+      g.setAttribute("transform", "translate(0,1)");
 
       g.highlight();
     };
