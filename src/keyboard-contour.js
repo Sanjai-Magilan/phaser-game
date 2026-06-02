@@ -258,6 +258,7 @@ export async function createContourKeyboard() {
   svg.appendChild(g3);
 
   overlay.appendChild(svg);
+
   document.body.appendChild(overlay);
   const keyMap = {};
 
