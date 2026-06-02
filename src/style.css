@@ -1,12 +1,12 @@
 :root {
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #fff;
+  --bg: #050514;
 }
 
 html,
 body,
-#game {
+#app {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -14,8 +14,13 @@ body,
 
 body {
   overflow: hidden;
+  background: var(--bg);
 }
 
 canvas {
   display: block;
+}
+
+#app {
+  background: var(--bg);
 }

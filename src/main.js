@@ -10,35 +10,22 @@ class MainScene extends Phaser.Scene {
     this.load.image("pillar", "/assets/Pillar%201.png");
   }
 
-  layout(width, height) {
-    this.bg.setDisplaySize(width, height);
-    this.ground.setDisplaySize(width, height);
-    this.pillar.setDisplaySize(width, height);
-  }
-
   create() {
-    const { width, height } = this.scale;
-
     this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0).setDepth(0);
 
     this.ground = this.add.image(0, 0, "ground").setOrigin(0, 0).setDepth(1);
 
     this.pillar = this.add.image(0, 0, "pillar").setOrigin(0, 0).setDepth(2);
-
-    this.layout(width, height);
-
-    this.scale.on("resize", (gameSize) => {
-      this.layout(gameSize.width, gameSize.height);
-    });
   }
 }
 
 new Phaser.Game({
   type: Phaser.AUTO,
   scale: {
-    mode: Phaser.Scale.RESIZE,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    mode: Phaser.Scale.FIT,
+    width: 1920,
+    height: 1080,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   parent: "app",
   // ensure Phaser attaches to the app container in index.html
