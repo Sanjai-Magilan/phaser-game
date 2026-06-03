@@ -29,8 +29,7 @@ class MainScene extends Phaser.Scene {
     ) => {
       if (this.textures.exists(key)) return;
 
-      // add padding so glow/haze isn't clipped by the texture bounds
-      const padding = Math.round(size * 0.28);
+      const padding = 20;
       const canvas = document.createElement("canvas");
       canvas.width = size + padding * 2;
       canvas.height = size + padding * 2;
@@ -38,128 +37,70 @@ class MainScene extends Phaser.Scene {
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      const r = (size / 2) * 0.9;
+      const r = size / 2;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // strong outer halo via radial gradient
-      const halo = ctx.createRadialGradient(
-        cx,
-        cy,
-        r * 0.45,
-        cx,
-        cy,
-        r + padding * 0.18,
-      );
-      const base = (a) =>
-        color.replace(
-          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
-          `rgba($1,$2,$3,${a})`,
-        );
-      halo.addColorStop(0, base(0.72));
-      halo.addColorStop(0.25, base(0.36));
-      halo.addColorStop(0.6, base(0.12));
-      halo.addColorStop(1, "rgba(0,0,0,0)");
-
-      ctx.fillStyle = halo;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r + padding * 0.6, 0, Math.PI * 2);
-      ctx.fill();
-
-      // main circle body
-      const body = ctx.createRadialGradient(
-        cx - r * 0.18,
-        cy - r * 0.18,
-        r * 0.02,
-        cx,
-        cy,
-        r,
-      );
-      body.addColorStop(0, "rgba(255,255,255,0.28)");
-      body.addColorStop(
-        0.35,
-        color.replace(
-          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
-          "rgba($1,$2,$3,0.84)",
-        ),
-      );
-      body.addColorStop(
-        1,
-        color.replace(
-          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
-          "rgba($1,$2,$3,0.12)",
-        ),
-      );
+      // 1. Dark Glassy Body
+      const body = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      body.addColorStop(0, "rgba(40, 45, 55, 0.95)");
+      body.addColorStop(0.6, "rgba(25, 28, 35, 0.98)");
+      body.addColorStop(1, "rgba(10, 12, 15, 1)");
 
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.fillStyle = body;
       ctx.fill();
 
-      // soft outer rim stroke
+      // 2. Inner Bottom Glow
+      const isGold = key.includes("gold");
+      const glowColor = isGold
+        ? "rgba(255, 180, 50, 0.35)"
+        : "rgba(100, 130, 200, 0.15)";
+      const glow = ctx.createRadialGradient(
+        cx,
+        cy + r * 0.5,
+        0,
+        cx,
+        cy + r * 0.5,
+        r * 0.8,
+      );
+      glow.addColorStop(0, glowColor);
+      glow.addColorStop(1, "rgba(0, 0, 0, 0)");
+
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+
+      // 3. Sharp Rim
+      ctx.beginPath();
+      ctx.arc(cx, cy, r - 0.5, 0, Math.PI * 2);
       ctx.strokeStyle = rimColor;
-      ctx.lineWidth = Math.max(2, size * 0.035);
-      const rimAlpha = key.includes("gold") ? 0.48 : 0.3;
-      ctx.globalAlpha = rimAlpha;
+      ctx.lineWidth = 1;
       ctx.stroke();
-      ctx.globalAlpha = 1;
 
-      // warm accent glow
-      const accentIsGold = key.includes("gold");
-      const accentColor = accentIsGold
-        ? "rgba(255,165,40,0.82)"
-        : "rgba(255,165,40,0.18)";
-      const accent = ctx.createRadialGradient(
-        cx,
-        cy + r * 0.32,
-        2,
-        cx,
-        cy + r * 0.32,
-        r * 0.46,
-      );
-      accent.addColorStop(0, accentColor);
-      accent.addColorStop(
-        0.4,
-        accentColor.replace(
-          /rgba\(([^,]+),([^,]+),([^,]+),([^\)]+)\)/,
-          "rgba($1,$2,$3,0.12)",
-        ),
-      );
-      accent.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.beginPath();
-      ctx.fillStyle = accent;
-      ctx.arc(cx, cy + r * 0.32, r * 0.46, 0, Math.PI * 2);
-      ctx.fill();
-
-      // highlight
-      ctx.beginPath();
-      ctx.fillStyle = "rgba(255,255,255,0.98)";
-      ctx.arc(cx - r * 0.34, cy - r * 0.4, r * 0.085, 0, Math.PI * 2);
-      ctx.fill();
-
-      // letter
+      // 4. Letter
       ctx.fillStyle = letterColor;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.font = `600 ${Math.floor(r * 0.76)}px sans-serif`;
-      ctx.fillText(letter, cx, cy + r * 0.02);
+      ctx.font = `700 ${Math.floor(r * 0.88)}px sans-serif`;
+      ctx.fillText(letter, cx, cy);
 
       this.textures.addCanvas(key, canvas);
     };
 
     const goldStyle = {
-      size: 240,
-      color: "rgba(255,200,80,0.95)",
-      letterColor: "#ffe6a6",
-      rim: "rgba(255,180,60,0.6)",
+      size: 150,
+      color: "rgba(255,180,50,1)",
+      letterColor: "#fcdb80",
+      rim: "rgba(255,200,100,0.3)",
     };
     const blueStyle = {
-      size: 240,
-      color: "rgba(120,140,190,0.45)",
-      letterColor: "#c6d6ff",
-      rim: "rgba(100,120,160,0.36)",
+      size: 150,
+      color: "rgba(100,120,160,1)",
+      letterColor: "rgba(200,215,255,0.45)",
+      rim: "rgba(150,180,255,0.15)",
     };
 
     const letters = ["F", "J"];
@@ -182,18 +123,18 @@ class MainScene extends Phaser.Scene {
       );
     });
 
-    const spacing = 50;
+    const spacing = 35;
     const centerX = this.scale.width / 2;
-    const verticalOffset = -90;
+    const verticalOffset = -130;
     const centerY = this.scale.height / 2 + verticalOffset;
-    const groupScale = 0.86;
+    const groupScale = 0.85;
 
     this.bubbleQueue = [];
     this.maxBubbles = 5;
     this.currentLetter = "F";
 
     const getBubbleX = (index) => {
-      const size = 240;
+      const size = 150;
       const totalWidth =
         this.maxBubbles * size + (this.maxBubbles - 1) * spacing;
       const startX = centerX - totalWidth / 2;
@@ -205,14 +146,13 @@ class MainScene extends Phaser.Scene {
       const key = `${isFirst ? "gold" : "blue"}_${letter}`;
       const x = getBubbleX(index);
       const img = this.add.image(x, centerY, key).setDepth(10 - index);
-      img.setScale(isFirst ? groupScale * 1.15 : groupScale);
-      img.setBlendMode(Phaser.BlendModes.SCREEN);
+      img.setScale(isFirst ? groupScale * 1.4 : groupScale);
       img.setAlpha(0);
       img.letter = letter;
 
       this.tweens.add({
         targets: img,
-        alpha: isFirst ? 1 : 0.85,
+        alpha: isFirst ? 1 : 0.55,
         duration: animate ? 400 : 0,
         delay: animate ? index * 80 : 0,
         ease: "Cubic.easeOut",
@@ -236,50 +176,6 @@ class MainScene extends Phaser.Scene {
       for (let i = 0; i < this.maxBubbles; i++) {
         this.bubbleQueue.push(spawnBubble(i, this.currentLetter, true));
       }
-      updateSelectionRing();
-    };
-
-    this.selectionRing = this.add.graphics().setDepth(12);
-
-    const updateSelectionRing = () => {
-      const activeImg = this.bubbleQueue[0];
-      if (!activeImg) return;
-
-      const ringRadius = Math.max(
-        32,
-        (activeImg.width * groupScale * 1.15) / 2 + 8,
-      );
-      this.selectionRing.clear();
-      this.selectionRing.lineStyle(
-        Math.max(3, ringRadius * 0.06),
-        0xffffff,
-        0.9,
-      );
-      this.selectionRing.strokeCircle(0, 0, ringRadius);
-      this.selectionRing.setScale(0.9);
-      this.selectionRing.setAlpha(1);
-      this.selectionRing.x = activeImg.x;
-      this.selectionRing.y = activeImg.y;
-
-      if (this._ringTween) this._ringTween.stop();
-      this._ringTween = this.tweens.add({
-        targets: this.selectionRing,
-        scale: 1.18,
-        alpha: 0,
-        duration: 400,
-        ease: "Cubic.easeOut",
-        onComplete: () => {
-          this.selectionRing.clear();
-          this.selectionRing.lineStyle(
-            Math.max(2, ringRadius * 0.045),
-            0xffffff,
-            0.15,
-          );
-          this.selectionRing.strokeCircle(0, 0, ringRadius);
-          this.selectionRing.setAlpha(1);
-          this.selectionRing.setScale(1);
-        },
-      });
     };
 
     const popAndShift = () => {
@@ -305,7 +201,7 @@ class MainScene extends Phaser.Scene {
         // Update its scale and float tween to gold style
         this.tweens.add({
           targets: nextActive,
-          scale: groupScale * 1.15,
+          scale: groupScale * 1.4,
           alpha: 1,
           duration: 200,
           ease: "Sine.easeOut",
@@ -320,8 +216,6 @@ class MainScene extends Phaser.Scene {
           repeat: -1,
           ease: "Sine.easeInOut",
         });
-
-        updateSelectionRing();
       } else {
         // Set cleared, switch letter and spawn another 5
         this.currentLetter = this.currentLetter === "F" ? "J" : "F";
