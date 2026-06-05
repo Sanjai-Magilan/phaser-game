@@ -3,11 +3,15 @@ import Phaser from "phaser";
 import "./keyboard.css";
 import { createContourKeyboard } from "./keyboard-contour";
 
+import bgImg from "./assets/BG 3.png";
+import groundImg from "./assets/Ground 1.png";
+import pillarImg from "./assets/Pillar 1.png";
+
 class MainScene extends Phaser.Scene {
   preload() {
-    this.load.image("bg", "/assets/BG%203.png");
-    this.load.image("ground", "/assets/Ground%201.png");
-    this.load.image("pillar", "/assets/Pillar%201.png");
+    this.load.image("bg", bgImg);
+    this.load.image("ground", groundImg);
+    this.load.image("pillar", pillarImg);
   }
 
   create() {
