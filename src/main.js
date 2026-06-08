@@ -23,13 +23,15 @@ class MainScene extends Phaser.Scene {
 
     this.pillar = this.add.image(0, 0, "pillar").setOrigin(0, 0).setDepth(2);
 
-    this.sunGod = this.add.video(
-      this.scale.width / 2 - 550,
-      this.scale.height / 2 - 100,
-      "sunGod",
-    );
+    const sunGodStartX = this.scale.width / 2 - 550;
+    const sunGodStartY = this.scale.height / 2 - 100;
 
-    this.sunGod.setDepth(1);
+    this.sunGodStartX = sunGodStartX;
+    this.sunGodStartY = sunGodStartY;
+
+    this.sunGod = this.add.video(sunGodStartX, sunGodStartY, "sunGod");
+
+    this.sunGod.setDepth(5);
     this.sunGod.setScale(0.2);
     this.sunGod.play(true);
 
@@ -261,7 +263,12 @@ class MainScene extends Phaser.Scene {
           ease: "Sine.easeInOut",
         });
       } else {
-        // Set cleared, switch letter and spawn another 5
+        this.tweens.killTweensOf(this.sunGod);
+
+        this.sunGod.setPosition(this.sunGodStartX, this.sunGodStartY);
+
+        this.isJumping = false;
+
         this.currentLetter = this.currentLetter === "F" ? "J" : "F";
         spawnBatch();
       }
