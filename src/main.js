@@ -2,6 +2,7 @@ import "./style.css";
 import Phaser from "phaser";
 import "./keyboard.css";
 import { createContourKeyboard } from "./keyboard-contour";
+import sunGodVideo from "./assets/sun_god.webm";
 
 import bgImg from "./assets/BG 3.png";
 import groundImg from "./assets/Ground 1.png";
@@ -12,6 +13,7 @@ class MainScene extends Phaser.Scene {
     this.load.image("bg", bgImg);
     this.load.image("ground", groundImg);
     this.load.image("pillar", pillarImg);
+    this.load.video("sunGod", sunGodVideo);
   }
 
   create() {
@@ -20,6 +22,18 @@ class MainScene extends Phaser.Scene {
     this.ground = this.add.image(0, 0, "ground").setOrigin(0, 0).setDepth(1);
 
     this.pillar = this.add.image(0, 0, "pillar").setOrigin(0, 0).setDepth(2);
+
+    this.sunGod = this.add.video(
+      this.scale.width / 2 - 550,
+      this.scale.height / 2 - 100,
+      "sunGod",
+    );
+
+    this.sunGod.setDepth(1);
+    this.sunGod.setScale(0.2);
+    this.sunGod.play(true);
+
+    this.isJumping = false;
 
     // -- Bubble generator: creates canvas textures that look like glowing bubbles
     this.bubbleTextures = new Map();
@@ -182,6 +196,32 @@ class MainScene extends Phaser.Scene {
       }
     };
 
+    const jumpSunGod = () => {
+      if (this.isJumping) return;
+
+      this.isJumping = true;
+
+      const targetX = this.sunGod.x + 180;
+
+      this.tweens.add({
+        targets: this.sunGod,
+        y: this.sunGod.y - 60,
+        duration: 180,
+        ease: "Quad.easeOut",
+        yoyo: true, // only jump up and down
+      });
+
+      this.tweens.add({
+        targets: this.sunGod,
+        x: targetX,
+        duration: 360,
+        ease: "Sine.easeOut",
+        onComplete: () => {
+          this.isJumping = false;
+        },
+      });
+    };
+
     const popAndShift = () => {
       const popped = this.bubbleQueue.shift();
       if (popped.floatTween) popped.floatTween.stop();
@@ -236,6 +276,7 @@ class MainScene extends Phaser.Scene {
       const active = this.bubbleQueue[0];
       if (active && active.letter === key) {
         this.playBeep();
+        jumpSunGod();
         popAndShift();
       }
     };
