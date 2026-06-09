@@ -1,3 +1,5 @@
+import keyboardImg from "./assets/keyboard.png";
+
 const NS = "http://www.w3.org/2000/svg";
 
 function loadImage(src) {
@@ -14,7 +16,7 @@ function loadImage(src) {
 
 export async function createContourKeyboard() {
   if (document.getElementById("keyboard-overlay")) return;
-  const src = "/assets/keyboard.png";
+  const src = keyboardImg;
   const img = await loadImage(src);
   const W = img.naturalWidth,
     H = img.naturalHeight;
