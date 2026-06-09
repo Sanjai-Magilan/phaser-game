@@ -9,6 +9,7 @@ import bgImg from "../assets/images/bg.png";
 import groundImg from "../assets/images/ground.png";
 import pillarImg from "../assets/images/pillar.png";
 import sunGodVideo from "../assets/videos/sun_god.webm";
+import sunGodSheet from "../assets/images/sun_god_sheet.png";
 
 /**
  * Main game scene that orchestrates gameplay.
@@ -27,6 +28,10 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("ground", groundImg);
     this.load.image("pillar", pillarImg);
     this.load.video("sunGod", sunGodVideo);
+    this.load.spritesheet("sunGod", sunGodSheet, {
+      frameWidth: 272,
+      frameHeight: 328,
+    });
   }
 
   /**
@@ -46,9 +51,20 @@ export default class GameScene extends Phaser.Scene {
     const sunGodStartX = this.scale.width / 2 - 550;
     const sunGodStartY = this.scale.height / 2 - 100;
     this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
-    
+
     this.bubbleManager = new BubbleManager(this);
     this.bubbleManager.spawnBatch(this.currentLetter);
+    if (!this.anims.exists("sunGodIdle")) {
+      this.anims.create({
+        key: "sunGodIdle",
+        frames: this.anims.generateFrameNumbers("sunGod", {
+          start: 0,
+          end: 80,
+        }),
+        frameRate: 30,
+        repeat: -1,
+      });
+    }
 
     // 4. Input Wiring
     this.setupInput();
@@ -67,15 +83,15 @@ export default class GameScene extends Phaser.Scene {
 
   /**
    * Handles a key press and checks against the active bubble.
-   * @param {string} key 
+   * @param {string} key
    */
   handleKeyPress(key) {
     const activeLetter = this.bubbleManager.getActiveLetter();
-    
+
     if (activeLetter && activeLetter === key) {
       this.audio.playBeep();
       this.sunGod.jump();
-      
+
       this.bubbleManager.popAndShift(() => {
         // Callback when a batch is complete
         this.sunGod.resetPosition();
