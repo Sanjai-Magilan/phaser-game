@@ -250,8 +250,6 @@ class MainScene extends Phaser.Scene {
 
         this.sunGod.setPosition(this.sunGodStartX, this.sunGodStartY);
 
-        this.isJumping = false;
-
         this.currentLetter = this.currentLetter === "F" ? "J" : "F";
         spawnBatch();
       }
