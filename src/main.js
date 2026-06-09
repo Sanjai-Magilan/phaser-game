@@ -207,14 +207,6 @@ class MainScene extends Phaser.Scene {
 
       this.tweens.add({
         targets: this.sunGod,
-        y: this.sunGod.y - 60,
-        duration: 180,
-        ease: "Quad.easeOut",
-        yoyo: true, // only jump up and down
-      });
-
-      this.tweens.add({
-        targets: this.sunGod,
         x: targetX,
         duration: 360,
         ease: "Sine.easeOut",
