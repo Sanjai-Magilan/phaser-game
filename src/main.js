@@ -1,5 +1,5 @@
-import "./style.css";
-import "./keyboard.css";
+import "./styles/style.css";
+import "./styles/keyboard.css";
 import Phaser from "phaser";
 import { gameConfig } from "./config/gameConfig";
 
