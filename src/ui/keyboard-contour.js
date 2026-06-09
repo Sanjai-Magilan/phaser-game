@@ -1,4 +1,4 @@
-import keyboardImg from "./assets/keyboard.png";
+import keyboardImg from "../assets/images/keyboard.png";
 
 const NS = "http://www.w3.org/2000/svg";
 
