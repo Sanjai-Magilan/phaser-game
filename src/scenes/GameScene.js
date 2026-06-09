@@ -27,7 +27,6 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("bg", bgImg);
     this.load.image("ground", groundImg);
     this.load.image("pillar", pillarImg);
-    this.load.video("sunGod", sunGodVideo);
     this.load.spritesheet("sunGod", sunGodSheet, {
       frameWidth: 272,
       frameHeight: 328,
@@ -48,12 +47,6 @@ export default class GameScene extends Phaser.Scene {
     this.add.image(0, 0, "pillar").setOrigin(0, 0).setDepth(2);
 
     // 3. Game Objects
-    const sunGodStartX = this.scale.width / 2 - 550;
-    const sunGodStartY = this.scale.height / 2 - 100;
-    this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
-
-    this.bubbleManager = new BubbleManager(this);
-    this.bubbleManager.spawnBatch(this.currentLetter);
     if (!this.anims.exists("sunGodIdle")) {
       this.anims.create({
         key: "sunGodIdle",
@@ -65,6 +58,12 @@ export default class GameScene extends Phaser.Scene {
         repeat: -1,
       });
     }
+    const sunGodStartX = this.scale.width / 2 - 550;
+    const sunGodStartY = this.scale.height / 2 - 100;
+    this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
+
+    this.bubbleManager = new BubbleManager(this);
+    this.bubbleManager.spawnBatch(this.currentLetter);
 
     // 4. Input Wiring
     this.setupInput();
