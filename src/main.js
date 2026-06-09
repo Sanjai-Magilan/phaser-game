@@ -35,8 +35,6 @@ class MainScene extends Phaser.Scene {
     this.sunGod.setScale(0.2);
     this.sunGod.play(true);
 
-    this.isJumping = false;
-
     // -- Bubble generator: creates canvas textures that look like glowing bubbles
     this.bubbleTextures = new Map();
     const createBubbleTexture = (
@@ -199,20 +197,13 @@ class MainScene extends Phaser.Scene {
     };
 
     const jumpSunGod = () => {
-      if (this.isJumping) return;
-
-      this.isJumping = true;
-
-      const targetX = this.sunGod.x + 180;
+      this.tweens.killTweensOf(this.sunGod);
 
       this.tweens.add({
         targets: this.sunGod,
-        x: targetX,
-        duration: 360,
+        x: this.sunGod.x + 180,
+        duration: 180,
         ease: "Sine.easeOut",
-        onComplete: () => {
-          this.isJumping = false;
-        },
       });
     };
 
