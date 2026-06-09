@@ -8,7 +8,6 @@ import KeyboardOverlay from "../ui/KeyboardOverlay";
 import bgImg from "../assets/images/bg.png";
 import groundImg from "../assets/images/ground.png";
 import pillarImg from "../assets/images/pillar.png";
-import sunGodVideo from "../assets/videos/sun_god.webm";
 import sunGodSheet from "../assets/images/sun_god_sheet.png";
 
 /**
