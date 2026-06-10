@@ -60,6 +60,7 @@ export default class GameScene extends Phaser.Scene {
     const sunGodStartX = 270;
     const sunGodStartY = this.scale.height / 2 - 240;
     this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
+    this.sunGod.enterScreen();
 
     this.bubbleManager = new BubbleManager(this);
     this.bubbleManager.spawnBatch(this.currentLetter);
@@ -91,10 +92,15 @@ export default class GameScene extends Phaser.Scene {
       this.sunGod.jump();
 
       this.bubbleManager.popAndShift(() => {
-        // Callback when a batch is complete
-        this.sunGod.resetPosition();
-        this.currentLetter = this.currentLetter === "F" ? "J" : "F";
-        this.bubbleManager.spawnBatch(this.currentLetter);
+        this.sunGod.exitScreen(() => {
+          this.sunGod.resetPosition();
+
+          this.currentLetter = this.currentLetter === "F" ? "J" : "F";
+
+          this.bubbleManager.spawnBatch(this.currentLetter);
+
+          this.sunGod.enterScreen();
+        });
       });
     }
   }

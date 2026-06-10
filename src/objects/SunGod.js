@@ -14,7 +14,7 @@ export default class SunGod {
     this.startX = x;
     this.startY = y;
 
-    this.sprite = this.scene.add.sprite(x, y, "sunGod");
+    this.sprite = this.scene.add.sprite(-300, y, "sunGod");
     this.sprite.setScale(0.67);
 
     this.sprite.setDepth(5);
@@ -22,6 +22,26 @@ export default class SunGod {
     this.sprite.play("sunGodIdle");
   }
 
+  enterScreen() {
+    this.scene.tweens.add({
+      targets: this.sprite,
+      x: this.startX,
+      duration: 800,
+      ease: "Sine.easeOut",
+    });
+  }
+
+  exitScreen(callback) {
+    this.scene.tweens.add({
+      targets: this.sprite,
+      x: this.scene.scale.width + 300,
+      duration: 800,
+      ease: "Sine.easeIn",
+      onComplete: () => {
+        if (callback) callback();
+      },
+    });
+  }
   /**
    * Handles the glide movement when a bubble is popped.
    */
@@ -31,7 +51,7 @@ export default class SunGod {
     this.scene.tweens.add({
       targets: this.sprite,
       x: this.sprite.x + 260,
-      duration: 180,
+      duration: 350,
       ease: "Sine.easeOut",
     });
   }
@@ -40,10 +60,10 @@ export default class SunGod {
    * Resets the Sun God to its starting position.
    */
   resetPosition() {
-    this.scene.tweens.killTweensOf(this.sprite);
+  this.scene.tweens.killTweensOf(this.sprite);
 
-    this.sprite.setPosition(this.startX, this.startY);
-  }
+  this.sprite.setPosition(-300, this.startY);
+}
 
   /**
    * Returns the current X position of the Sun God.
