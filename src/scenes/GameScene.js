@@ -57,7 +57,7 @@ export default class GameScene extends Phaser.Scene {
         repeat: -1,
       });
     }
-    const sunGodStartX = this.scale.width / 2 - 550;
+    const sunGodStartX = 180;
     const sunGodStartY = this.scale.height / 2 - 100;
     this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
 

@@ -11,10 +11,10 @@ export default class BubbleManager {
     this.scene = scene;
     this.bubbleQueue = [];
     this.maxBubbles = 5;
-    this.spacing = 35;
-    this.groupScale = 0.85;
+    this.spacing = 20;
+    this.groupScale = 0.75;
     this.verticalOffset = -130;
-    
+
     const centerX = this.scene.scale.width / 2;
     this.centerY = this.scene.scale.height / 2 + this.verticalOffset;
     this.centerX = centerX;
@@ -27,13 +27,13 @@ export default class BubbleManager {
    */
   initTextures() {
     const goldStyle = {
-      size: 150,
+      size: 100,
       color: "rgba(255,180,50,1)",
       letterColor: "#fcdb80",
       rim: "rgba(255,200,100,0.3)",
     };
     const blueStyle = {
-      size: 150,
+      size: 100,
       color: "rgba(100,120,160,1)",
       letterColor: "rgba(200,215,255,0.45)",
       rim: "rgba(150,180,255,0.15)",
@@ -129,14 +129,18 @@ export default class BubbleManager {
 
   /**
    * Calculates the X position for a bubble at a given index.
-   * @param {number} index 
+   * @param {number} index
    * @returns {number}
    */
   getBubbleX(index) {
-    const size = 150;
-    const totalWidth = this.maxBubbles * size + (this.maxBubbles - 1) * this.spacing;
-    const startX = this.centerX - totalWidth / 2;
-    return startX + index * (size + this.spacing) + size / 2;
+    const bubbleSize = 150;
+
+    const sunGodX = this.scene.sunGod.startX;
+    const distanceFromSunGod = 170;
+
+    const firstBubbleCenterX = sunGodX + distanceFromSunGod;
+
+    return firstBubbleCenterX + index * 170;
   }
 
   /**
@@ -147,7 +151,7 @@ export default class BubbleManager {
     const key = `${isFirst ? "gold" : "blue"}_${letter}`;
     const x = this.getBubbleX(index);
     const img = this.scene.add.image(x, this.centerY, key).setDepth(10 - index);
-    
+
     img.setScale(isFirst ? this.groupScale * 1.4 : this.groupScale);
     img.setAlpha(0);
     img.letter = letter;
@@ -243,7 +247,7 @@ export default class BubbleManager {
    * Clears all bubbles in the queue.
    */
   clearAll() {
-    this.bubbleQueue.forEach(bubble => {
+    this.bubbleQueue.forEach((bubble) => {
       if (bubble.floatTween) bubble.floatTween.stop();
       bubble.destroy();
     });
