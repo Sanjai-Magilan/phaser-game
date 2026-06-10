@@ -8,7 +8,7 @@ import KeyboardOverlay from "../ui/KeyboardOverlay";
 import bgImg from "../assets/images/bg.png";
 import groundImg from "../assets/images/ground.png";
 import pillarImg from "../assets/images/pillar.png";
-import sunGodVideo from "../assets/videos/sun_god.webm";
+import sunGodSheet from "../assets/images/sun_god_sheet.png";
 
 /**
  * Main game scene that orchestrates gameplay.
@@ -26,7 +26,10 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("bg", bgImg);
     this.load.image("ground", groundImg);
     this.load.image("pillar", pillarImg);
-    this.load.video("sunGod", sunGodVideo);
+    this.load.spritesheet("sunGod", sunGodSheet, {
+      frameWidth: 272,
+      frameHeight: 328,
+    });
   }
 
   /**
@@ -43,10 +46,22 @@ export default class GameScene extends Phaser.Scene {
     this.add.image(0, 0, "pillar").setOrigin(0, 0).setDepth(2);
 
     // 3. Game Objects
-    const sunGodStartX = this.scale.width / 2 - 550;
-    const sunGodStartY = this.scale.height / 2 - 100;
+    if (!this.anims.exists("sunGodIdle")) {
+      this.anims.create({
+        key: "sunGodIdle",
+        frames: this.anims.generateFrameNumbers("sunGod", {
+          start: 0,
+          end: 80,
+        }),
+        frameRate: 30,
+        repeat: -1,
+      });
+    }
+    const sunGodStartX = 270;
+    const sunGodStartY = this.scale.height / 2 - 240;
     this.sunGod = new SunGod(this, sunGodStartX, sunGodStartY);
-    
+    this.sunGod.enterScreen();
+
     this.bubbleManager = new BubbleManager(this);
     this.bubbleManager.spawnBatch(this.currentLetter);
 
@@ -67,20 +82,25 @@ export default class GameScene extends Phaser.Scene {
 
   /**
    * Handles a key press and checks against the active bubble.
-   * @param {string} key 
+   * @param {string} key
    */
   handleKeyPress(key) {
     const activeLetter = this.bubbleManager.getActiveLetter();
-    
+
     if (activeLetter && activeLetter === key) {
       this.audio.playBeep();
       this.sunGod.jump();
-      
+
       this.bubbleManager.popAndShift(() => {
-        // Callback when a batch is complete
-        this.sunGod.resetPosition();
-        this.currentLetter = this.currentLetter === "F" ? "J" : "F";
-        this.bubbleManager.spawnBatch(this.currentLetter);
+        this.sunGod.exitScreen(() => {
+          this.sunGod.resetPosition();
+
+          this.currentLetter = this.currentLetter === "F" ? "J" : "F";
+
+          this.bubbleManager.spawnBatch(this.currentLetter);
+
+          this.sunGod.enterScreen();
+        });
       });
     }
   }
