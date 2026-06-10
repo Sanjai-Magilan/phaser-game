@@ -15,6 +15,7 @@ export default class SunGod {
     this.startY = y;
 
     this.sprite = this.scene.add.sprite(x, y, "sunGod");
+    this.sprite.setScale(0.67);
 
     this.sprite.setDepth(5);
 
@@ -29,7 +30,7 @@ export default class SunGod {
 
     this.scene.tweens.add({
       targets: this.sprite,
-      x: this.sprite.x + 180,
+      x: this.sprite.x + 260,
       duration: 180,
       ease: "Sine.easeOut",
     });

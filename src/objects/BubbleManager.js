@@ -13,7 +13,7 @@ export default class BubbleManager {
     this.maxBubbles = 5;
     this.spacing = 20;
     this.groupScale = 0.75;
-    this.verticalOffset = -130;
+    this.verticalOffset = -240;
 
     const centerX = this.scene.scale.width / 2;
     this.centerY = this.scene.scale.height / 2 + this.verticalOffset;
@@ -136,11 +136,11 @@ export default class BubbleManager {
     const bubbleSize = 150;
 
     const sunGodX = this.scene.sunGod.startX;
-    const distanceFromSunGod = 170;
+    const distanceFromSunGod = 280;
 
     const firstBubbleCenterX = sunGodX + distanceFromSunGod;
 
-    return firstBubbleCenterX + index * 170;
+    return firstBubbleCenterX + index * 260;
   }
 
   /**
