@@ -17,28 +17,44 @@ export default class SunGod {
     this.sprite = this.scene.add.sprite(-300, y, "sunGod");
     this.sprite.setScale(0.67);
 
-    this.sprite.setDepth(5);
+    this.sprite.setDepth(1);
 
     this.sprite.play("sunGodIdle");
+    this.hoverAmount = 10;
+    this.hoverTween = this.scene.tweens.add({
+      targets: this.sprite,
+      y: this.startY - this.hoverAmount,
+      duration: 1200,
+      ease: "Sine.easeInOut",
+      yoyo: true,
+      repeat: -1,
+    });
   }
 
   enterScreen() {
-    this.sprite.x = -300;
+    this.hoverTween.pause();
+
+    this.sprite.setPosition(-300, this.startY);
 
     this.scene.tweens.add({
       targets: this.sprite,
       x: this.startX,
       duration: 600,
       ease: "Sine.easeOut",
+      onComplete: () => {
+        console.log("resume hover");
+        this.hoverTween.resume();
+      },
     });
   }
-
   exitScreen(callback) {
+    this.hoverTween.pause();
+
     this.scene.tweens.add({
       targets: this.sprite,
       x: this.scene.scale.width + 300,
-      duration: 800,
-      ease: "Sine.easeIn",
+      duration: 1000,
+      ease: "Sine.easeInOut",
       onComplete: () => {
         if (callback) callback();
       },
@@ -48,11 +64,15 @@ export default class SunGod {
    * Handles the glide movement when a bubble is popped.
    */
   jump() {
+    this.hoverTween.pause();
     this.scene.tweens.add({
       targets: this.sprite,
       x: this.sprite.x + 260,
       duration: 400,
       ease: "Sine.easeInOut",
+      onComplete: () => {
+        this.hoverTween.resume();
+      },
     });
   }
 
@@ -60,7 +80,7 @@ export default class SunGod {
    * Resets the Sun God to its starting position.
    */
   resetPosition() {
-    this.scene.tweens.killTweensOf(this.sprite);
+    this.sprite.setPosition(-300, this.startY);
   }
 
   /**
