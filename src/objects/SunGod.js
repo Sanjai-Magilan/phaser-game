@@ -17,7 +17,7 @@ export default class SunGod {
     this.sprite = this.scene.add.sprite(-300, y, "sunGod");
     this.sprite.setScale(0.67);
 
-    this.sprite.setDepth(5);
+    this.sprite.setDepth(1);
 
     this.sprite.play("sunGodIdle");
   }
